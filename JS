@@ -1,0 +1,162 @@
+//document ready
+$(document).ready(function(){
+  //origin URL
+  var originURL = "https://cors-anywhere.herokuapp.com/"
+  //base Wikipedia API URL
+  var baseURL = "https://en.wikipedia.org/w/api.php"
+  //random article query
+  var randomGen =
+  "?action=query&format=json&prop=extracts&generator=random&grnnamespace=0"
+  //autocomplete API
+  var autoComplBase =
+  "https://en.wikipedia.org/w/api.php?action=opensearch&limit=10&format=json&search="
+  //test var to check if any other div exists on the page
+  var counter = "";
+
+  //AUTOCOMPLETE
+  //this section handles what happens after a key is pressed inside your
+  //input text box
+  $("#keyword").on("keyup", function(){
+    var stuff_in_text_box = document.getElementById('keyword').value;
+    var autoURL =autoComplBase + stuff_in_text_box + "&callback=?";
+    //console.log(autoURL);
+    var autoData = $.getJSON(autoURL, function(data){
+      var current = [];
+      //check to see if the autofill option is allready displayed
+      //does not seem to work so far
+      //the only way to refresh the list is to reload the page
+      if (current === []){
+        current = data[1];
+      }else {
+        var current = arrayUnique(data[1].concat(current));
+      }
+      //a function that merges 2 arrays and eliminates repeating elements
+      function arrayUnique(array) {
+        var a = array.concat();
+        for(var i=0; i<a.length; ++i) {
+          for(var j=i+1; j<a.length; ++j) {
+            if(a[i] === a[j])
+              a.splice(j--, 1);
+          }
+        }
+        return a;
+      }
+
+      //get the <datalist> and <input> elements
+      var dataList = document.getElementById("autoFillList");
+      var input = document.getElementById("keyword");
+      //populate the list with the contents of data[1] array
+      //loop over the JSON array
+      current.forEach(function(item){
+        //create a new option element
+        var option = document.createElement('option');
+        //set the value using the item
+        //console.log(item);
+        option.value = "";
+        option.value = item;
+        //add the <option> element to the <datalist>
+        dataList.appendChild(option);
+      });//close for
+    });//close JSON
+  });//close keypress inside search field
+
+  //RANDOM article button behvior
+  $("#random").on("click", function(){
+    //Get random article data
+    var randomURL = originURL + baseURL + randomGen;
+    var rawData = $.getJSON(randomURL, function(data){
+      for (first in data.query.pages){
+        //Generate article title, formatted as html
+        var artNr = data.query.pages[first].pageid;
+        var contentShow = '<h5>' +
+        '<a target="_blank" href="https://en.wikipedia.org/?curid=' + artNr +
+        '"' + '>' + "&nbsp" + data.query.pages[first].title + '</a>' + '</h5>'
+        };
+      //Check if there are any other results on the page
+      //Check the type of div, for random art or specific
+      //If specific article, remove it and create one for random
+      //If random, just replace the content
+      if (counter === "specific"){
+        counter = "random";
+        document.getElementById("parentCont").remove();
+        //Call function that creates parent div and sub-divs
+        //as well as displays results, formatted as html
+        randomFcn(contentShow);
+        } else if (counter === "") {
+          counter = "random";
+          //console.log(counter);
+          randomFcn(contentShow);
+          } else {
+            $(".results").html(contentShow);
+            }//close else
+    });//close JSON
+    });//close Random button
+
+
+  //SPECIFIC button behavior
+  $("#specific").on("click", function(){
+    //Get topics related to search term
+    var userEntry = document.getElementById('keyword');
+    var terms = keyword.value;
+    //search term query
+    var specificSearch = "?action=opensearch&search=" + terms +
+    "&format=json&callback=?"
+    var specificURL = baseURL + specificSearch;
+    //console.log(specificURL);
+    var rawData = $.getJSON(specificURL, function(data){
+      //Check if there are any other results on the page
+      //Check the type of div, for random art or specific
+      //If specific article, remove it and create one for random
+      //If random, just replace the content
+      if (counter === "random" || counter === "specific"){
+        counter = "specific";
+        //console.log(counter);
+        document.getElementById("parentCont").remove();
+        specificFcn(data[1], data[3]);
+       } else if (counter === ""){
+        counter = "specific";
+        //console.log(counter);
+        specificFcn(data[1], data[3]);
+        }//close else-if
+    });//close JSON
+  });//close SPECIFIC buttton
+
+  //FUNCTION RANDOM
+  function randomFcn(contentShow) {
+    var iDiv = document.createElement('div');
+    iDiv.className = 'container parentCont';
+    iDiv.id = "parentCont";
+    //Create the sub-divs
+    var innerDiv = document.createElement('div');
+    innerDiv.className = 'results';
+    //The variable iDiv is still good, append to it.
+    iDiv.appendChild(innerDiv);
+    //show results, formatted as html
+    document.getElementsByTagName('body')[0].appendChild(iDiv)
+    $(".results").html(contentShow);
+  }
+
+  //FUNCTION SPECIFIC
+  function specificFcn(data_1, data_3){
+    var iDiv = document.createElement('div');
+    iDiv.className = "container parentCont";
+    iDiv.id = "parentCont";
+    document.getElementsByTagName('body')[0].appendChild(iDiv)
+    //Create sub-divs
+    for (var i = 0; i < data_1.length; i++) {
+      var divClassName = "results" + i;
+      //Create the sub-divs
+      var innerDiv = document.createElement('div');
+      innerDiv.className = divClassName;
+      innerDiv.id = "specificResults";
+      //The variable iDiv is still good, append to it
+      iDiv.appendChild(innerDiv);
+      //Show result, formatted as html
+      var specificContent = '<h5>' + '<a target="_blank" href=' + data_3[i] +
+       '>' + "&nbsp" + data_1[i]+ '</a>' + '</h5>'
+      //console.log(specificContent);
+      $("." + divClassName).html(specificContent);
+  };//close FOR
+  };//close specificFcn
+
+});//close document ready

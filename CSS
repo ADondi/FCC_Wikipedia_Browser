@@ -1,0 +1,87 @@
+body{
+  background-color: darkslategray;
+}
+
+/*Title*/
+.title{
+  color: goldenrod;
+  /*text-decoration: underline;*/
+  text-align: center;
+  padding-top: 50px;
+}
+
+/*Line*/
+hr{
+    border: 0;
+    height: 1px;
+    background-image: linear-gradient(to right, rgba(218, 165, 32, 0),
+    rgba(218, 165, 32, 1), rgba(218, 165, 32, 0));
+}
+
+.subTitle{
+  text-align: center;
+  color: goldenRod;
+  padding-top: 100px;
+}
+
+/*Search field and icon div*/
+.searchOption{
+  text-align: center;
+  padding-top: 50px;
+}
+
+/*Style input field*/
+input{
+  background: transparent;
+  color: white;
+  border: 2px solid goldenrod;
+  border-radius: 10px;
+  outline: none;
+}
+
+.icon{
+  padding-top: 0px;
+  color: goldenrod
+}
+
+/*Search button*/
+.searchButt{
+  text-align: center;
+  background: transparent;
+  border: none;
+  outline: 0 !important;
+  padding-top: 0px;
+  padding-bottom: 50px;
+}
+
+.randomButt{
+  text-align: center;
+  background: transparent;
+  color: goldenrod;
+  border: none;
+  outline: 0 !important;
+  padding-top: 0px;
+  padding-bottom: 50px;
+}
+
+.parentCont{
+  padding-top: 25px;
+  padding-bottom: 25px;
+  border-style: solid;
+  border-color: goldenrod;
+  border-width: 1px;
+  box-shadow: -5px -5px 1px goldenrod;
+}
+
+.results, #specificResults{
+  padding-top: 0px;
+  border-left-style: solid;
+  border-color: goldenrod;
+  border-width: 10px;
+}
+
+.credits{
+  color: goldenrod;
+  padding-top: 0px;
+  text-align: center;
+}

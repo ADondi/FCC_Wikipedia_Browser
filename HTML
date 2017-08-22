@@ -1,0 +1,39 @@
+<!--font awseome-->
+<link rel="stylesheet" href =
+"https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
+<!--Google icons-->
+<link href = "https://fonts.googleapis.com/icon?family=Material+Icons" rel =
+"stylesheet">
+
+<div class = "container-fluid"><!--Main container-->
+
+<!--Title-->
+  <h2 class = "title">Wikipedia Viewer</h2>
+<!--Line using horizontal tag-->
+ <hr>
+ <!--Credits-->
+  <p class = "credits">-Developed and coded by Alexandru Dondera fro Free Code
+     Camp, June 2017-</p>
+
+  <h3 class = "subTitle">Would you like to search something specific or read a
+    random article?</h3>
+<!--Options-->
+<!--Search field-->
+  <div class = "row">
+    <div class = "col-6 col-md-6 col-lg-6 searchOption" >
+      <form onsubmit = "return false">
+        <input type = "text" id = "keyword" list = "autoFillList" placeholder =
+        "search term"><datalist id = "autoFillList" autocomplete = "off"></datalist>
+        <button class = "searchButt" id = "specific"><i class = "fa fa-search icon"
+          style = "font-size:22px"></i></button>
+      </form>
+    </div>
+
+<!--Random article-->
+    <div class = "col-6 col-md-6 col-lg-6 searchOption">
+      <button class = "randomButt" id = "random"><i class = "fa fa-refresh icon"
+        style = "font-size:22px"></i> Read random article</button>
+    </div>
+  </div><!--Close options-->
+
+</div><!--Close main-->
